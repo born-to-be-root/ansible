@@ -1,0 +1,14 @@
+---
+- name: install debian/APT specific packages
+  apt: state=installed name={{ item }}
+  with_items: libvirt_packages
+  tags: 
+    - libvirt-packages
+
+
+- name: manage default libvirt
+  template: >
+    src=libvirt-bin_default.j2 dest=/etc/default/libvirt-bin
+    owner=root group=root mode=644
+  tags: libvirt
+

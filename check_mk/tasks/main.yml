@@ -1,0 +1,17 @@
+---
+- name: -> Download Check_mk Server
+  action: command wget http://mathias-kettner.com/download/{{ check_mk_version }}.tar.gz -O /usr/src/{{ check_mk_version }}.tar.gz creates=/usr/src/{{ check_mk_version }}.tar.gz
+  tags:
+  - get_check-mk_tar.gz
+  - check-mk_server
+
+- name: Unarchive Check_mk Server
+  action: unarchive src=/usr/src/{{ check_mk_version }}.tar.gz dest=/usr/src copy=no
+  tags:
+  - unarchive_check-mk_tar.gz
+  - check-mk_server
+
+- name: Setup Check_mk Server
+  shell: ./setup.sh --yes 
+  args:
+    chdir: /usr/src/{{ check_mk_version }}

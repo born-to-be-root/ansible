@@ -1,0 +1,7 @@
+---
+libvirt_packages:
+  - libvirt-bin
+  - kvm
+  - virt-top
+  - virt-what
+  - virt-viewer 

@@ -1,0 +1,4 @@
+---
+- name: Create PV / VG on /dev/{{ dev_param }}
+  lvg: vg=vg-kvm pvs=/dev/{{ dev_param }}
+

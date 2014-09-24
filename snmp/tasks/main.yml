@@ -1,0 +1,15 @@
+---
+- name: install debian/APT specific packages
+  apt: state=installed name={{ item }}
+  with_items: snmp_packages
+  tags: 
+    - snmp-packages
+
+
+- name: manage snmpd
+  template: >
+    src=snmpd.j2 dest=/etc/snmp/snmpd.conf
+    owner=root group=root mode=644
+  tags: 
+    - snmp-packages
+  notify: restart snmpd

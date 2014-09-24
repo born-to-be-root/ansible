@@ -1,0 +1,4 @@
+---
+nrpe_packages:
+  - sudo
+  - nagios-nrpe-server

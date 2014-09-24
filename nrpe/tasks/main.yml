@@ -1,0 +1,39 @@
+---
+- name: install nrpe specific packages
+  apt: state=installed name={{ item }}
+  with_items: nrpe_packages
+  tags: 
+    - nrpe-packages
+
+
+- name: upload nrpe config
+  action: synchronize src=/etc/ansible/files/contentpatrol/nrpe/
+    dest=/etc/nagios/
+    archive=no
+    recursive=yes
+    checksum=yes
+  tags: 
+    - nrpe
+    - cp-cloud
+  notify:
+    - restart nagios-nrpe-server
+
+- name: upload nagios plugins
+  action: synchronize src=/etc/ansible/files/contentpatrol/nagios-plugins/
+    dest=/usr/lib/nagios/plugins/
+    archive=no
+    recursive=yes
+    checksum=yes
+  tags: 
+    - nrpe
+    - cp-cloud
+  notify:
+    - restart nagios-nrpe-server
+
+- name: "enable sudo for nagios user without password"
+  lineinfile: >
+    dest=/etc/sudoers
+    state=present
+    regexp='^nagios'
+    line='nagios ALL=(ALL:ALL) NOPASSWD:/usr/lib/nagios/plugins/'
+
