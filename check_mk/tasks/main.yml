@@ -15,3 +15,12 @@
   shell: ./setup.sh --yes 
   args:
     chdir: /usr/src/{{ check_mk_version }}
+  tags:
+  - check-mk_server
+
+- name: Patch mail Script to find pnp4nagios
+  action: replace dest=/usr/share/check_mk/notifications/mail 
+    regexp="^        path = context.get"
+    replace='        path = "/usr/share/pnp4nagios/html/index.php"'  
+  tags:
+  - patch_check-mk_server
