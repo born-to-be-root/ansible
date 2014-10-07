@@ -1,3 +1,4 @@
 ---
-snmp_packages:
-  - snmpd
+deb_packages:
+  - check-mk-agent_1.2.5i5p3-2_all.deb
+  - check-mk-agent-logwatch_1.2.5i5p3-2_all.deb

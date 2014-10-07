@@ -24,3 +24,29 @@
     replace='        path = "/usr/share/pnp4nagios/html/index.php"'  
   tags:
   - patch_check-mk_server
+
+- name: -> Download Check_mk Agent
+  action: get_url url=http://mathias-kettner.com/download/{{ item }} 
+    dest=/etc/ansible/roles/check_mk/files/debian/
+  with_items: deb_packages
+  tags:
+  - get_check-mk_agent
+  - check-mk_agent
+  delegate_to: localhost
+
+- name: upload Agent packages
+  action: synchronize src=/etc/ansible/roles/check_mk/files/debian/{{ item }}
+    dest=/tmp/
+    archive=no
+    checksum=yes
+  with_items: deb_packages
+  tags: 
+  - install_check-mk_agent
+  - check-mk_agent
+
+- name: -> install Agent on Monitoring Host
+  action: command dpkg -i -E --force-confdef /tmp/{{ item }}
+  with_items: deb_packages
+  tags:
+  - install_check-mk_agent
+  - check-mk_agent  
